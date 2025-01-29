@@ -2,6 +2,7 @@ require 'minitest/autorun'
 require 'open3'
 
 require_relative 'compiler.rb'
+require_relative 'golden.rb'
 
 UPDATE = ENV['UPDATE'] == 'true' # golden
 
@@ -261,31 +262,10 @@ module Compiler
   end
 
   class TestCompiler < Minitest::Test
-
-    GOLDEN_COUNT = 15.freeze
-    GOLDEN_CASES = Dir.glob(File.expand_path('testdata/rb/*.rb')).map { File.basename(it, '.rb') }
-    if GOLDEN_CASES.count != GOLDEN_COUNT
-      raise RuntimeError, "Expected #{GOLDEN_COUNT} golden files but found #{GOLDEN_CASES.count}"
-    end
-
-    def ensure_valid_rb(path)
-      _out, err, status = Open3.capture3("ruby -c \"#{path}\"")
-      if !status.success?
-        raise SystemCallError, "Ruby format error: #{err}"
-      end
-    end
-
-    def ensure_valid_js(path)
-      _out, err, status = Open3.capture3("node --check \"#{path}\"")
-      if !status.success?
-        raise SystemCallError, "JavaScript format error: #{err}"
-      end
-    end
-
-    GOLDEN_CASES.each do |golden_name|
-      define_method("test_compile_#{golden_name}") do
-        rb_path = File.expand_path("testdata/rb/#{golden_name}.rb")
-        js_path = File.expand_path("testdata/js/#{golden_name}.js")
+    Golden::FileLocator.new.golden_files.each do |golden|
+      define_method("test_compile_#{golden}") do
+        rb_path = File.expand_path("testdata/rb/#{golden}.rb")
+        js_path = File.expand_path("testdata/js/#{golden}.js")
 
         actual = Compiler.compile File.read(rb_path)
         if UPDATE || !File.exist?(js_path)
@@ -293,8 +273,8 @@ module Compiler
         end
 
         # ensure after we could have written the file
-        ensure_valid_rb rb_path
-        ensure_valid_js js_path
+        Golden::SyntaxValidator.ensure_valid_rb rb_path
+        Golden::SyntaxValidator.ensure_valid_js js_path
 
         assert_equal File.read(js_path), actual
       end
