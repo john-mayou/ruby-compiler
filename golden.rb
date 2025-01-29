@@ -4,12 +4,14 @@ require 'digest'
 
 module Golden
   class FileLocator
-    def golden_files
-      files = Dir.glob(File.expand_path('testdata/rb/*.rb')).map { File.basename(it, '.rb') }
-      if files.count < 10
-        raise RuntimeError, "Expected to find a few more files, only found #{files.count}"
+    class << self
+      def golden_files
+        files = Dir.glob(File.expand_path('testdata/rb/*.rb')).map { File.basename(it, '.rb') }
+        if files.count < 10
+          raise RuntimeError, "Expected to find a few more files, only found #{files.count}"
+        end
+        files
       end
-      files
     end
   end
 

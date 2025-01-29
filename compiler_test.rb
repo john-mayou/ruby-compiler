@@ -265,7 +265,7 @@ module Compiler
 
     FILE_SHA_STORE = Golden::FileShaStore.new
 
-    Golden::FileLocator.new.golden_files.each do |golden|
+    Golden::FileLocator.golden_files.each do |golden|
       define_method("test_compile_#{golden}") do
         rb_path = File.expand_path("testdata/rb/#{golden}.rb")
         js_path = File.expand_path("testdata/js/#{golden}.js")
