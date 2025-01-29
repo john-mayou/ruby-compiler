@@ -1,0 +1,17 @@
+#!/bin/bash
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+SHA_CACHE_PATHS=(
+    "$SCRIPT_DIR/../testdata/rb_sha.txt"
+    "$SCRIPT_DIR/../testdata/js_sha.txt"
+)
+
+for path in "${SHA_CACHE_PATHS[@]}"; do
+    if [ -e "$path" ]; then
+        echo "Removing: $path"
+        rm "$path"
+    else
+        echo "Skipping: $path does not exist."
+    fi
+done

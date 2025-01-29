@@ -262,21 +262,31 @@ module Compiler
   end
 
   class TestCompiler < Minitest::Test
+
+    FILE_SHA_STORE = Golden::FileShaStore.new
+
     Golden::FileLocator.new.golden_files.each do |golden|
       define_method("test_compile_#{golden}") do
         rb_path = File.expand_path("testdata/rb/#{golden}.rb")
         js_path = File.expand_path("testdata/js/#{golden}.js")
 
-        actual = Compiler.compile File.read(rb_path)
-        if UPDATE || !File.exist?(js_path)
-          File.write(js_path, actual)
+        rb = File.read(rb_path)
+        if !FILE_SHA_STORE.match?(rb_path, rb)
+          Golden::SyntaxValidator.ensure_valid_rb(rb)
+          FILE_SHA_STORE.update(rb_path, rb)
         end
 
-        # ensure after we could have written the file
-        Golden::SyntaxValidator.ensure_valid_rb rb_path
-        Golden::SyntaxValidator.ensure_valid_js js_path
+        js = Compiler.compile(rb)
+        if !FILE_SHA_STORE.match?(js_path, js)
+          Golden::SyntaxValidator.ensure_valid_js(js)
+          FILE_SHA_STORE.update(js_path, js)
+        end
 
-        assert_equal File.read(js_path), actual
+        if UPDATE || !File.exist?(js_path)
+          File.write(js_path, js)
+        end
+
+        assert_equal File.read(js_path), js
       end
     end
   end

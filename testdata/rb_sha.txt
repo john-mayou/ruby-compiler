@@ -1,0 +1,15 @@
+1d19c0d16c81426f0e8a082b231cf85ac2d1ffc4 /Users/johnmayou/Projects/build-my-own-x/ruby/rb-compiler/testdata/rb/fun_def_with_arg.rb
+cd97856313e83f1d17fbe47a3c3d0af2f91fb391 /Users/johnmayou/Projects/build-my-own-x/ruby/rb-compiler/testdata/rb/fun_def.rb
+7ddd3bdd003c255f0c57778fe13b23f02cb043d8 /Users/johnmayou/Projects/build-my-own-x/ruby/rb-compiler/testdata/rb/var_dec_integer.rb
+c33cbed6bd2f1ef695906a91e1d36caf5c65cfb4 /Users/johnmayou/Projects/build-my-own-x/ruby/rb-compiler/testdata/rb/fun_def_with_arg_defaults.rb
+4d1e611de3fa58d14aaf37f9a854496a7395b73a /Users/johnmayou/Projects/build-my-own-x/ruby/rb-compiler/testdata/rb/var_dec_string.rb
+39c59dfd0b899ab3a8e0e26e0a36613a546a5983 /Users/johnmayou/Projects/build-my-own-x/ruby/rb-compiler/testdata/rb/fun_call_with_multi_args.rb
+712143386706e9009f5b38297b3e93374f643697 /Users/johnmayou/Projects/build-my-own-x/ruby/rb-compiler/testdata/rb/fun_call_with_expr.rb
+3a5c48490c337ebc1f208c20b5ebda56bd597bf3 /Users/johnmayou/Projects/build-my-own-x/ruby/rb-compiler/testdata/rb/fun_def_with_body_multi_line.rb
+e405cc026f0d4460f0bb6b1ca9c9176a8d056f38 /Users/johnmayou/Projects/build-my-own-x/ruby/rb-compiler/testdata/rb/fun_def_with_body_single_line.rb
+2d839e1551df0e255e058c70226a572ece214a3d /Users/johnmayou/Projects/build-my-own-x/ruby/rb-compiler/testdata/rb/var_dec_fun_call.rb
+066368ba1cb9f6fb157fd2d23bf265eaaca1dc91 /Users/johnmayou/Projects/build-my-own-x/ruby/rb-compiler/testdata/rb/var_dec_expr.rb
+da39a3ee5e6b4b0d3255bfef95601890afd80709 /Users/johnmayou/Projects/build-my-own-x/ruby/rb-compiler/testdata/rb/empty.rb
+96532f90dde02a5e6ff1ccdbd8cedc37008a7f35 /Users/johnmayou/Projects/build-my-own-x/ruby/rb-compiler/testdata/rb/fun_call_with_arg.rb
+dc841c402b561d2d9267b8749872a6d545b38291 /Users/johnmayou/Projects/build-my-own-x/ruby/rb-compiler/testdata/rb/fun_def_with_multi_args.rb
+03c02d3a082938540eefbbf83796e6d8e03d5dd5 /Users/johnmayou/Projects/build-my-own-x/ruby/rb-compiler/testdata/rb/fun_call.rb
