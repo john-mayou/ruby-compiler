@@ -1,6 +1,10 @@
 {
   "tasks": {
-    "dev": "deno run --watch main.ts"
+    "build:css": "npx sass styles.scss styles.css",
+    "build:js": "npx esbuild script.ts --outfile=script.js",
+    "build": "deno run --allow-read --allow-run --allow-write --watch build.ts",
+    "start": "deno run --allow-net --allow-read --allow-write --allow-run --watch main.ts",
+    "dev": "deno task start & deno task build"
   },
   "imports": {
     "@std/assert": "jsr:@std/assert@1"

@@ -1,13 +1,37 @@
-'use strict';
+'use strict'
 
-import * as path from 'node:path';
+import * as path from 'node:path'
 
-Deno.serve((_req: Request) => new Response(
-    generateHtml({ testCases: findTestCases() }),
-    {
-        headers: { 'content-type': 'text/html; charset=utf-8' }
+const SCRIPT_PATH = path.join(Deno.cwd(), 'script.js')
+const STYLES_PATH = path.join(Deno.cwd(), 'styles.css')
+
+Deno.serve((req: Request) => {
+    const path = new URL(req.url).pathname
+    switch(path) {
+        case '/script.js':
+            return serveStaticFile(SCRIPT_PATH, 'application/javascript')
+        case '/styles.css':
+            return serveStaticFile(STYLES_PATH, 'text/css')
+        case '/': {
+            const html = generateHtml({ testCases: findTestCases() })
+            return new Response(html, { headers: { 'content-type': 'text/html' } })
+        }
+        default:
+            return new Response('404 - Not Found', { status: 404 })
     }
-))
+})
+
+function serveStaticFile(path: string, contentType: string): Response {
+    try {
+        const file = Deno.readFileSync(path)
+        return new Response(file, { headers: { 'content-type': contentType } })
+    } catch (err) {
+        if (err instanceof Deno.errors.NotFound) {
+            return new Response('404 - Not Found', { status: 404 })
+        }
+        throw err
+    }
+}
 
 interface TestCase {
     name: string
@@ -56,37 +80,30 @@ function generateHtml({ testCases }: GenerateHtmlParams): string {
     <!DOCTYPE html>
     <html lang='en'>
     <head>
-      <title>Code Comparison</title>
-      <style>
-        body { font-family: Arial, sans-serif; margin: 20px; background: #f4f4f4; color: #333; }
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-        th, td { padding: 10px; border: 1px solid #ccc; vertical-align: top; }
-        th { background: #eee; font-weight: bold; }
-        pre { margin: 0; white-space: pre-wrap; word-wrap: break-word; font-family: Consolas, 'Courier New', monospace; }
-        .code-block { background: #1e1e1e; color: #dcdcdc; padding: 10px; border-radius: 5px; }
-      </style>
+      <title>Test Cases</title>
+      <link rel='stylesheet' href='/styles.css'>
+      <script src='./script.js' defer></script>
     </head>
     <body>
-      <h1>Comparing Ruby and JS Code</h1>
       <table>
         <thead>
           <tr>
-            <th>Ruby Code</th>
-            <th>JS Code</th>
+            <th>Ruby</th>
+            <th>JavaScript</th>
           </tr>
         </thead>
         <tbody>
           ${testCases.map((tc) => `
               <tr>
-                <td><pre class='code-block'>${escapeHtml(tc.rb)}</pre></td>
-                <td><pre class='code-block'>${escapeHtml(tc.js)}</pre></td>
+                <td><pre class='code-block' title='${escapeHtml(tc.name)}'>${escapeHtml(tc.rb)}</pre></td>
+                <td><pre class='code-block' title='${escapeHtml(tc.name)}'>${escapeHtml(tc.js)}</pre></td>
               </tr>
             `).join('')}
         </tbody>
       </table>
     </body>
     </html>
-  `;
+  `
 }
 
 function escapeHtml(unsafe: string): string {
