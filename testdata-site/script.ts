@@ -1,5 +1,9 @@
 'use strict'
 
+import hljs from 'https://cdn.jsdelivr.net/npm/highlight.js@11.8.0/+esm'
+
+hljs.highlightAll()
+
 type FormattedMap = Record<string, string>
 
 const formatted_res = await fetch('/formatted.json')
@@ -10,7 +14,10 @@ for (const [golden, formatted] of Object.entries(formatted_map)) {
     if (jsCodeBlock === null) continue
 
     const unformatted = jsCodeBlock.textContent || ''
-    const updateText = (text: string) => jsCodeBlock.innerText = text
+    const updateText = (text: string) => {
+        jsCodeBlock.textContent = text
+        hljs.highlightElement(jsCodeBlock)
+    }
 
     jsCodeBlock.addEventListener('mouseenter', (_event: MouseEvent) => {
         updateText(formatted)

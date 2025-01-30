@@ -89,8 +89,11 @@ function generateHtml({ testCases }: GenerateHtmlParams): string {
     <html lang='en'>
     <head>
       <title>Test Cases</title>
+
       <link rel='stylesheet' href='/styles.css'>
       <script type='module' src='./script.js' defer></script>
+
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.8.0/styles/github-dark.css">
     </head>
     <body>
       <table>
@@ -103,8 +106,8 @@ function generateHtml({ testCases }: GenerateHtmlParams): string {
         <tbody>
           ${testCases.map((tc) => `
               <tr>
-                <td><pre id='rb-${tc.name}' class='code-block rb' title='${escapeHtml(tc.name)}'>${escapeHtml(tc.rb)}</pre></td>
-                <td><pre id='js-${tc.name}' class='code-block js' title='${escapeHtml(tc.name)}'>${escapeHtml(tc.js)}</pre></td>
+                <td><pre><code id='rb-${tc.name}' class='language-ruby' title='${escapeHtml(tc.name)}'>${escapeHtml(tc.rb)}</code></pre></td>
+                <td><pre><code id='js-${tc.name}' class='language-javascript' title='${escapeHtml(tc.name)}'>${escapeHtml(tc.js)}</code></pre></td>
               </tr>
             `).join('')}
         </tbody>

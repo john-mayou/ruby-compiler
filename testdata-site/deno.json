@@ -10,6 +10,7 @@
     "lib": ["deno.ns", "dom"]
   },
   "imports": {
-    "@std/assert": "jsr:@std/assert@1"
+    "@std/assert": "jsr:@std/assert@1",
+    "@types/highlight.js": "npm:@types/highlight.js@^10.1.0"
   }
 }
