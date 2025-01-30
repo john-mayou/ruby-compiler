@@ -1,17 +1,25 @@
 'use strict'
 
+import * as prettier from 'npm:prettier'
 import * as path from 'node:path'
 
 const SCRIPT_PATH = path.join(Deno.cwd(), 'script.js')
 const STYLES_PATH = path.join(Deno.cwd(), 'styles.css')
 
-Deno.serve((req: Request) => {
+Deno.serve(async (req: Request) => {
     const path = new URL(req.url).pathname
     switch(path) {
         case '/script.js':
             return serveStaticFile(SCRIPT_PATH, 'application/javascript')
         case '/styles.css':
             return serveStaticFile(STYLES_PATH, 'text/css')
+        case '/formatted.json': {
+            const formattedMap: Record<string, string> = {}
+            for (const testCase of findTestCases()) {
+                formattedMap[testCase.name] = await prettier.format(testCase.js, { parser: 'babel' })
+            }
+            return new Response(JSON.stringify(formattedMap), { headers: { 'content-type': 'application/json' } })
+        }
         case '/': {
             const html = generateHtml({ testCases: findTestCases() })
             return new Response(html, { headers: { 'content-type': 'text/html' } })
@@ -82,7 +90,7 @@ function generateHtml({ testCases }: GenerateHtmlParams): string {
     <head>
       <title>Test Cases</title>
       <link rel='stylesheet' href='/styles.css'>
-      <script src='./script.js' defer></script>
+      <script type='module' src='./script.js' defer></script>
     </head>
     <body>
       <table>
@@ -95,8 +103,8 @@ function generateHtml({ testCases }: GenerateHtmlParams): string {
         <tbody>
           ${testCases.map((tc) => `
               <tr>
-                <td><pre class='code-block rb' title='${escapeHtml(tc.name)}'>${escapeHtml(tc.rb)}</pre></td>
-                <td><pre class='code-block js' title='${escapeHtml(tc.name)}'>${escapeHtml(tc.js)}</pre></td>
+                <td><pre id='rb-${tc.name}' class='code-block rb' title='${escapeHtml(tc.name)}'>${escapeHtml(tc.rb)}</pre></td>
+                <td><pre id='js-${tc.name}' class='code-block js' title='${escapeHtml(tc.name)}'>${escapeHtml(tc.js)}</pre></td>
               </tr>
             `).join('')}
         </tbody>
