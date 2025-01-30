@@ -1,0 +1,39 @@
+#!/usr/bin/env ruby
+
+require_relative '../compiler'
+
+path = File.expand_path(ARGV.first)
+dest = File.expand_path(ARGV[1])
+
+if path.nil?
+  $stderr.puts 'No path specified'
+  exit 1
+end
+
+if dest.nil?
+  $stderr.puts 'No dest specified'
+  exit 1
+end
+
+if !File.exist?(path)
+  $stderr.puts "#{path} file does not exist"
+  exit 1
+end
+
+if File.extname(path) != '.rb'
+  $stderr.puts "#{path} is not a Ruby file"
+  exit 1
+end
+
+if File.extname(dest) != '.js'
+  $stderr.puts "#{dest} is not a JavaScript file"
+end
+
+js = Compiler.compile(File.read(path))
+js = Compiler.format(js)
+
+File.open(dest, 'w') do |file|
+  file.write(js)
+end
+
+$stdout.puts "Wrote JavaScript to #{ARGV[1]}"
