@@ -95,8 +95,8 @@ function generateHtml({ testCases }: GenerateHtmlParams): string {
         <tbody>
           ${testCases.map((tc) => `
               <tr>
-                <td><pre class='code-block' title='${escapeHtml(tc.name)}'>${escapeHtml(tc.rb)}</pre></td>
-                <td><pre class='code-block' title='${escapeHtml(tc.name)}'>${escapeHtml(tc.js)}</pre></td>
+                <td><pre class='code-block rb' title='${escapeHtml(tc.name)}'>${escapeHtml(tc.rb)}</pre></td>
+                <td><pre class='code-block js' title='${escapeHtml(tc.name)}'>${escapeHtml(tc.js)}</pre></td>
               </tr>
             `).join('')}
         </tbody>

@@ -35,8 +35,11 @@ pre {
     color: #dcdcdc;
     padding: 10px;
     border-radius: 5px;
-    cursor: pointer;
     position: relative;
+
+    &.js {
+        cursor: pointer;
+    }
 }
 
 .code-block:hover::after {
