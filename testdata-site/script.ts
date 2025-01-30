@@ -6,20 +6,20 @@ const formatted_res = await fetch('/formatted.json')
 const formatted_map: FormattedMap = await formatted_res.json()
 
 for (const [golden, formatted] of Object.entries(formatted_map)) {
-    const codeBlock = document.getElementById(`js-${golden}`) as HTMLElement | null
-    if (codeBlock === null) continue
+    const jsCodeBlock = document.getElementById(`js-${golden}`) as HTMLElement | null
+    if (jsCodeBlock === null) continue
 
-    const unformatted = codeBlock.textContent || ''
-    const updateText = (text: string) => codeBlock.innerText = text
+    const unformatted = jsCodeBlock.textContent || ''
+    const updateText = (text: string) => jsCodeBlock.innerText = text
 
-    codeBlock.addEventListener('mouseenter', (_event: MouseEvent) => {
+    jsCodeBlock.addEventListener('mouseenter', (_event: MouseEvent) => {
         updateText(formatted)
 
         const onFinish = (_event: MouseEvent) => {
             updateText(unformatted)
-            codeBlock.removeEventListener('mouseleave', onFinish)
+            jsCodeBlock.removeEventListener('mouseleave', onFinish)
         }
 
-        codeBlock.addEventListener('mouseleave', onFinish)
+        jsCodeBlock.addEventListener('mouseleave', onFinish)
     })
 }
