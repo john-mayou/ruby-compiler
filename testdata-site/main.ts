@@ -104,7 +104,7 @@ function generateHtml({ testCases }: GenerateHtmlParams): string {
           </tr>
         </thead>
         <tbody>
-          ${testCases.map((tc) => `
+          ${testCases.sort((a, b) => a.name.localeCompare(b.name)).map((tc) => `
               <tr>
                 <td><pre><code id='rb-${tc.name}' class='language-ruby' title='${escapeHtml(tc.name)}'>${escapeHtml(tc.rb)}</code></pre></td>
                 <td><pre><code id='js-${tc.name}' class='language-javascript' title='${escapeHtml(tc.name)}'>${escapeHtml(tc.js)}</code></pre></td>
