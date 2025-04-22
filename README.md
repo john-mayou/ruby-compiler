@@ -1,4 +1,4 @@
-# Ruby Compiler
+# Ruby to JavaScript Compiler
 
 A Ruby to JavaScript compiler written in Ruby. This project demonstrates core concepts of compiler construction, including parsing, syntax transformation, and code generation. It was inspired by the concepts outlined in this [guide](https://dineshgowda.com/posts/build-your-own-persistent-kv-store/#contents:given-a-cursor-at-the-location-of-the-data-in-file-will-you-be-able-to-read-the-data).
 
